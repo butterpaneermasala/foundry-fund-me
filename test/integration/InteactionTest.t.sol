@@ -6,8 +6,8 @@ import {Test, console} from "forge-std/Test.sol";
 import {FundMe} from "../../src/FundMe.sol";
 import {DeployFundMe} from "../../script/DeployFundMe.s.sol";
 import {FundFundMe, WithdrawFundMe} from "../../script/interaction.s.sol";
- 
-contract InteractionTest is Test{
+
+contract InteractionTest is Test {
     FundMe fundMe;
 
     address USER = makeAddr("user");

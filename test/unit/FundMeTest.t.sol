@@ -5,8 +5,8 @@ pragma solidity ^0.8.18;
 import {Test, console} from "forge-std/Test.sol";
 import {FundMe} from "../../src/FundMe.sol";
 import {DeployFundMe} from "../../script/DeployFundMe.s.sol";
- 
-contract FundMeTest is Test{
+
+contract FundMeTest is Test {
     FundMe fundMe;
 
     address USER = makeAddr("user");
@@ -26,11 +26,11 @@ contract FundMeTest is Test{
         vm.deal(USER, STARTING_BALANCE);
     }
 
-    function testMinimumDollerIsFive() public view{
+    function testMinimumDollerIsFive() public view {
         assertEq(fundMe.MINIMUM_USD(), 5e18);
     }
 
-    function testOwnerIsMsgSender() public view{
+    function testOwnerIsMsgSender() public view {
         // console.log(fundMe.i_owner());
         // console.log(msg.sender);
         assertEq(fundMe.getOwnwer(), msg.sender);
@@ -46,13 +46,11 @@ contract FundMeTest is Test{
     // 4. Staging
     //      - Tesing our code in a real environment that is not prod
 
-
     function testPriceFeedVersionIsAccurate() public view {
         if (block.chainid == 11155111) {
             uint256 version = fundMe.getVersion();
             assertEq(version, 4);
         } else if (block.chainid == 1) {
-            
             uint256 version = fundMe.getVersion();
             // console.log(version);
             assertEq(version, 6);
@@ -67,23 +65,21 @@ contract FundMeTest is Test{
 
     function testFundUpdatesFundedDataStructure() public {
         vm.prank(USER); // the next transaction will be sent by USER
-        fundMe.fund{value : SEND_VALUE}();
+        fundMe.fund{value: SEND_VALUE}();
 
         uint256 ammountFunded = fundMe.getAddressToAmountFunded(address(USER));
         assertEq(ammountFunded, SEND_VALUE);
     }
 
-    function testAddsFunderToArrayOfFunders() public funded{
-
+    function testAddsFunderToArrayOfFunders() public funded {
         vm.prank(USER); // the next transaction will be sent by USER
-        fundMe.fund{value : SEND_VALUE}();
-        
+        fundMe.fund{value: SEND_VALUE}();
+
         address funder = fundMe.getFunder(0);
         assertEq(funder, USER);
     }
 
     function testOnlyOwnerCanWithdraw() public funded {
-
         vm.prank(USER);
         vm.expectRevert();
         fundMe.withdraw();
@@ -101,7 +97,7 @@ contract FundMeTest is Test{
         fundMe.withdraw(); // should have spent gas?
 
         uint256 gasEnd = gasleft();
-        uint256 gasUsed = (gasStart-gasEnd) * tx.gasprice;
+        uint256 gasUsed = (gasStart - gasEnd) * tx.gasprice;
         console.log(gasUsed);
 
         // Assert
@@ -109,7 +105,7 @@ contract FundMeTest is Test{
         uint256 endingFundMeBalance = address(fundMe).balance;
 
         assertEq(endingFundMeBalance, 0);
-        assertEq(endingOwnerBalance, startingFundMeBalance+startingOwnerBalnace);
+        assertEq(endingOwnerBalance, startingFundMeBalance + startingOwnerBalnace);
     }
 
     function testWithDrawFromMultipleFunders() public funded {
@@ -126,7 +122,6 @@ contract FundMeTest is Test{
 
             // vm.fund new address
             fundMe.fund{value: SEND_VALUE}();
-
         }
 
         // Act
@@ -138,9 +133,8 @@ contract FundMeTest is Test{
         vm.stopPrank();
 
         // Assert
-        assertEq(address(fundMe).balance,0);
-        assertEq(fundMe.getOwnwer().balance, startFundMeBalance+startingOwnerBalance);
-
+        assertEq(address(fundMe).balance, 0);
+        assertEq(fundMe.getOwnwer().balance, startFundMeBalance + startingOwnerBalance);
     }
 
     function testWithDrawFromMultipleFundersCheaper() public funded {
@@ -157,7 +151,6 @@ contract FundMeTest is Test{
 
             // vm.fund new address
             fundMe.fund{value: SEND_VALUE}();
-
         }
 
         // Act
@@ -169,8 +162,7 @@ contract FundMeTest is Test{
         vm.stopPrank();
 
         // Assert
-        assertEq(address(fundMe).balance,0);
-        assertEq(fundMe.getOwnwer().balance, startFundMeBalance+startingOwnerBalance);
-
+        assertEq(address(fundMe).balance, 0);
+        assertEq(fundMe.getOwnwer().balance, startFundMeBalance + startingOwnerBalance);
     }
 }

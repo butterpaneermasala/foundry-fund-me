@@ -5,13 +5,12 @@
 // Sepolia ETH/USD
 // Mainnet ETH/USD
 
-
 pragma solidity ^0.8.18;
 
 import {Script} from "forge-std/Script.sol";
 import {MockV3Aggregator} from "../test/mock/MockV3Aggregator.sol";
 
-contract HelperConfig is Script{
+contract HelperConfig is Script {
     // If we are on a local anvil, we deploy mocks
     // Otherwise, grab the ezisting address from the live network
 
@@ -27,7 +26,7 @@ contract HelperConfig is Script{
     constructor() {
         if (block.chainid == 11155111) {
             activeNetworkConfig = getSepoliaEthConfig();
-        } else if (block.chainid == 1){
+        } else if (block.chainid == 1) {
             activeNetworkConfig = getMainnetEthConfig();
         } else {
             activeNetworkConfig = getOrCreateAnvilEthconfig();
@@ -36,17 +35,13 @@ contract HelperConfig is Script{
 
     function getSepoliaEthConfig() public pure returns (NetworkConfig memory) {
         // Price feed address
-        NetworkConfig memory sepoliaConfig = NetworkConfig({
-            priceFeed: 0x694AA1769357215DE4FAC081bf1f309aDC325306
-        });
+        NetworkConfig memory sepoliaConfig = NetworkConfig({priceFeed: 0x694AA1769357215DE4FAC081bf1f309aDC325306});
         return sepoliaConfig;
     }
 
     function getMainnetEthConfig() public pure returns (NetworkConfig memory) {
         // Price feed address
-        NetworkConfig memory ethConfig = NetworkConfig({
-            priceFeed: 0x72AFAECF99C9d9C8215fF44C77B94B99C28741e8
-        });
+        NetworkConfig memory ethConfig = NetworkConfig({priceFeed: 0x72AFAECF99C9d9C8215fF44C77B94B99C28741e8});
         return ethConfig;
     }
 
@@ -64,10 +59,7 @@ contract HelperConfig is Script{
         MockV3Aggregator mockPriceFeed = new MockV3Aggregator(DECIMAL, INITIAL_PRICE);
         vm.stopBroadcast();
 
-        NetworkConfig memory anvilConfig = NetworkConfig({
-            priceFeed: address(mockPriceFeed)
-        });
+        NetworkConfig memory anvilConfig = NetworkConfig({priceFeed: address(mockPriceFeed)});
         return anvilConfig;
     }
-
 }
