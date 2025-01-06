@@ -9,7 +9,7 @@
 pragma solidity ^0.8.18;
 
 import {Script} from "forge-std/Script.sol";
-import {MockV3Aggregator} from "../test/mocks/MocksV3Aggregator.sol";
+import {MockV3Aggregator} from "../test/mock/MockV3Aggregator.sol";
 
 contract HelperConfig is Script{
     // If we are on a local anvil, we deploy mocks
