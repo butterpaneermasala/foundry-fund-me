@@ -20,5 +20,5 @@ Before you begin, ensure you have the following tools installed:
 - **Metamask** or any other Ethereum wallet for interaction.
 
 ```bash
-git clone https://github.com/your-username/fundme.git
+git clone https://github.com/butterpaneermasala/foundry-fund-me.git
 cd fundme
